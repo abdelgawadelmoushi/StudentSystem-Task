@@ -12,8 +12,8 @@ using StudentSystem.Data;
 namespace StudentSystem.Migrations
 {
     [DbContext(typeof(StudentSystemContext))]
-    [Migration("20250930121803_tablesconnections")]
-    partial class tablesconnections
+    [Migration("20250930133011_tablesrelations")]
+    partial class tablesrelations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,12 +50,7 @@ namespace StudentSystem.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StudentID")
-                        .HasColumnType("int");
-
                     b.HasKey("CourseId");
-
-                    b.HasIndex("StudentID");
 
                     b.ToTable("Courses");
                 });
@@ -147,15 +142,27 @@ namespace StudentSystem.Migrations
                     b.ToTable("students");
                 });
 
-            modelBuilder.Entity("P01_StudentSystem.Models.Course", b =>
+            modelBuilder.Entity("P01_StudentSystem.Models.StudentCourse", b =>
                 {
-                    b.HasOne("P01_StudentSystem.Models.Student", "Student")
-                        .WithMany("CourseEnrollments")
-                        .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Navigation("Student");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("StudentCourses");
                 });
 
             modelBuilder.Entity("P01_StudentSystem.Models.Homework", b =>
@@ -166,13 +173,13 @@ namespace StudentSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("P01_StudentSystem.Models.Student", "StudentsEnrolled")
+                    b.HasOne("P01_StudentSystem.Models.Student", "Student")
                         .WithMany("HomeworkSubmissions")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("StudentsEnrolled");
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("P01_StudentSystem.Models.Resource", b =>
@@ -186,18 +193,39 @@ namespace StudentSystem.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("P01_StudentSystem.Models.StudentCourse", b =>
+                {
+                    b.HasOne("P01_StudentSystem.Models.Course", "Course")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("P01_StudentSystem.Models.Student", "Student")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("P01_StudentSystem.Models.Course", b =>
                 {
                     b.Navigation("HomeworkSubmissions");
 
                     b.Navigation("Resources");
+
+                    b.Navigation("StudentCourses");
                 });
 
             modelBuilder.Entity("P01_StudentSystem.Models.Student", b =>
                 {
-                    b.Navigation("CourseEnrollments");
-
                     b.Navigation("HomeworkSubmissions");
+
+                    b.Navigation("StudentCourses");
                 });
 #pragma warning restore 612, 618
         }

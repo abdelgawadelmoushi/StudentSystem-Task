@@ -18,10 +18,10 @@ namespace P01_StudentSystem.Models
 
         public DateTime Birthday { get; set; }
 
-        public List<Course> CourseEnrollments { get; set; }
+        public List<StudentCourse> StudentCourses { get; set; }
         public List<Homework> HomeworkSubmissions { get; set; }
 
-
+        
     }
     public class Course
     {
@@ -32,10 +32,9 @@ namespace P01_StudentSystem.Models
         public DateTime EndDate { get; set; }
         public decimal Price { get; set; }
 
-        public int StudentID { get; set; }
-        public Student Student { get; set; }
 
         public List<Resource> Resources { get; set; }
+        public List<StudentCourse> StudentCourses { get; set; }
         public List<Homework> HomeworkSubmissions { get; set; }
 
     }
@@ -62,19 +61,20 @@ namespace P01_StudentSystem.Models
 
         public int StudentId { get; set; }
 
-        public Student StudentsEnrolled { get; set; }
+        public Student Student { get; set; }
 
 
     }
 
     public class StudentCourse
     {
+        public int Id { get; set; }
         public int StudentId { get; set; }
+        public Student Student { get; set; }
         public int CourseId { get; set; }
+        public Course Course { get; set; }
 
-        public List<Student> Students { get; set; }
 
-        public List<Course> Courses { get; set; }
 
     }
 
