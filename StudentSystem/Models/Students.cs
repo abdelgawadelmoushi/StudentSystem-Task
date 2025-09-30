@@ -23,60 +23,6 @@ namespace P01_StudentSystem.Models
 
         
     }
-    public class Course
-    {
-        public int CourseId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public decimal Price { get; set; }
-
-
-        public List<Resource> Resources { get; set; }
-        public List<StudentCourse> StudentCourses { get; set; }
-        public List<Homework> HomeworkSubmissions { get; set; }
-
-    }
-    public class Resource
-    {
-        public int ResourceId { get; set; }
-        public string Name { get; set; }
-
-        public string Url { get; set; }
-        public int CourseId { get; set; }
-
-        public Course Course { get; set; }
-
-    }
-    public class Homework
-    {
-        public int HomeworkId { get; set; }
-        public string Content { get; set; }
-
-        public string ContentType { get; set; }
-        public DateTime SubmissionTime { get; set; }
-
-        public int CourseId { get; set; }
-
-        public int StudentId { get; set; }
-
-        public Student Student { get; set; }
-
-
-    }
-
-    public class StudentCourse
-    {
-        public int Id { get; set; }
-        public int StudentId { get; set; }
-        public Student Student { get; set; }
-        public int CourseId { get; set; }
-        public Course Course { get; set; }
-
-
-
-    }
 
 }
 
