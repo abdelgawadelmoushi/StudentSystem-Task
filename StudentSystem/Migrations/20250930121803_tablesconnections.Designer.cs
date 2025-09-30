@@ -12,8 +12,8 @@ using StudentSystem.Data;
 namespace StudentSystem.Migrations
 {
     [DbContext(typeof(StudentSystemContext))]
-    [Migration("20250930114757_StudenSystemtables")]
-    partial class StudenSystemtables
+    [Migration("20250930121803_tablesconnections")]
+    partial class tablesconnections
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,12 @@ namespace StudentSystem.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
+
                     b.HasKey("CourseId");
+
+                    b.HasIndex("StudentID");
 
                     b.ToTable("Courses");
                 });
@@ -71,10 +76,20 @@ namespace StudentSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("SubmissionTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("HomeworkId");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Homeworks");
                 });
@@ -99,6 +114,8 @@ namespace StudentSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ResourceId");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Resources");
                 });
@@ -128,6 +145,59 @@ namespace StudentSystem.Migrations
                     b.HasKey("StudentId");
 
                     b.ToTable("students");
+                });
+
+            modelBuilder.Entity("P01_StudentSystem.Models.Course", b =>
+                {
+                    b.HasOne("P01_StudentSystem.Models.Student", "Student")
+                        .WithMany("CourseEnrollments")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("P01_StudentSystem.Models.Homework", b =>
+                {
+                    b.HasOne("P01_StudentSystem.Models.Course", null)
+                        .WithMany("HomeworkSubmissions")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("P01_StudentSystem.Models.Student", "StudentsEnrolled")
+                        .WithMany("HomeworkSubmissions")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudentsEnrolled");
+                });
+
+            modelBuilder.Entity("P01_StudentSystem.Models.Resource", b =>
+                {
+                    b.HasOne("P01_StudentSystem.Models.Course", "Course")
+                        .WithMany("Resources")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("P01_StudentSystem.Models.Course", b =>
+                {
+                    b.Navigation("HomeworkSubmissions");
+
+                    b.Navigation("Resources");
+                });
+
+            modelBuilder.Entity("P01_StudentSystem.Models.Student", b =>
+                {
+                    b.Navigation("CourseEnrollments");
+
+                    b.Navigation("HomeworkSubmissions");
                 });
 #pragma warning restore 612, 618
         }

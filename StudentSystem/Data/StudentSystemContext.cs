@@ -15,7 +15,9 @@ namespace StudentSystem.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Resource> Resources { get; set; }
         public DbSet<Homework> Homeworks { get; set; }
+
      
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

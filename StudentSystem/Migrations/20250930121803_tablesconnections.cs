@@ -5,11 +5,46 @@
 namespace StudentSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class StudenSystemtablesrelations : Migration
+    public partial class tablesconnections : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Courses_students_StudentId",
+                table: "Courses");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Homeworks_students_StudentId",
+                table: "Homeworks");
+
+            migrationBuilder.RenameColumn(
+                name: "StudentId",
+                table: "Courses",
+                newName: "StudentID");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Courses_StudentId",
+                table: "Courses",
+                newName: "IX_Courses_StudentID");
+
+            migrationBuilder.AddColumn<int>(
+                name: "CourseId",
+                table: "Resources",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "StudentId",
+                table: "Homeworks",
+                type: "int",
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
             migrationBuilder.AddColumn<int>(
                 name: "CourseId",
                 table: "Homeworks",
@@ -17,19 +52,15 @@ namespace StudentSystem.Migrations
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AddColumn<int>(
-                name: "StudentId",
-                table: "Homeworks",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
+            migrationBuilder.AlterColumn<int>(
                 name: "StudentID",
                 table: "Courses",
                 type: "int",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Resources_CourseId",
@@ -40,16 +71,6 @@ namespace StudentSystem.Migrations
                 name: "IX_Homeworks_CourseId",
                 table: "Homeworks",
                 column: "CourseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Homeworks_StudentId",
-                table: "Homeworks",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Courses_StudentID",
-                table: "Courses",
-                column: "StudentID");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Courses_students_StudentID",
@@ -111,25 +132,53 @@ namespace StudentSystem.Migrations
                 name: "IX_Homeworks_CourseId",
                 table: "Homeworks");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Homeworks_StudentId",
-                table: "Homeworks");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Courses_StudentID",
-                table: "Courses");
+            migrationBuilder.DropColumn(
+                name: "CourseId",
+                table: "Resources");
 
             migrationBuilder.DropColumn(
                 name: "CourseId",
                 table: "Homeworks");
 
-            migrationBuilder.DropColumn(
-                name: "StudentId",
-                table: "Homeworks");
-
-            migrationBuilder.DropColumn(
+            migrationBuilder.RenameColumn(
                 name: "StudentID",
-                table: "Courses");
+                table: "Courses",
+                newName: "StudentId");
+
+            migrationBuilder.RenameIndex(
+                name: "IX_Courses_StudentID",
+                table: "Courses",
+                newName: "IX_Courses_StudentId");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "StudentId",
+                table: "Homeworks",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "StudentId",
+                table: "Courses",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Courses_students_StudentId",
+                table: "Courses",
+                column: "StudentId",
+                principalTable: "students",
+                principalColumn: "StudentId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Homeworks_students_StudentId",
+                table: "Homeworks",
+                column: "StudentId",
+                principalTable: "students",
+                principalColumn: "StudentId");
         }
     }
 }

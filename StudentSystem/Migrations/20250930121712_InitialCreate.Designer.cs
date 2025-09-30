@@ -12,8 +12,8 @@ using StudentSystem.Data;
 namespace StudentSystem.Migrations
 {
     [DbContext(typeof(StudentSystemContext))]
-    [Migration("20250930114831_StudenSystemtablesrelations")]
-    partial class StudenSystemtablesrelations
+    [Migration("20250930121712_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,12 +50,12 @@ namespace StudentSystem.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("StudentID")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.HasKey("CourseId");
 
-                    b.HasIndex("StudentID");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Courses");
                 });
@@ -76,18 +76,13 @@ namespace StudentSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SubmissionTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("HomeworkId");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
@@ -102,9 +97,6 @@ namespace StudentSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ResourceId"));
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -114,8 +106,6 @@ namespace StudentSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ResourceId");
-
-                    b.HasIndex("CourseId");
 
                     b.ToTable("Resources");
                 });
@@ -149,48 +139,16 @@ namespace StudentSystem.Migrations
 
             modelBuilder.Entity("P01_StudentSystem.Models.Course", b =>
                 {
-                    b.HasOne("P01_StudentSystem.Models.Student", "Student")
+                    b.HasOne("P01_StudentSystem.Models.Student", null)
                         .WithMany("CourseEnrollments")
-                        .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("P01_StudentSystem.Models.Homework", b =>
                 {
-                    b.HasOne("P01_StudentSystem.Models.Course", null)
+                    b.HasOne("P01_StudentSystem.Models.Student", null)
                         .WithMany("HomeworkSubmissions")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("P01_StudentSystem.Models.Student", "StudentsEnrolled")
-                        .WithMany("HomeworkSubmissions")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("StudentsEnrolled");
-                });
-
-            modelBuilder.Entity("P01_StudentSystem.Models.Resource", b =>
-                {
-                    b.HasOne("P01_StudentSystem.Models.Course", "Course")
-                        .WithMany("Resources")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("P01_StudentSystem.Models.Course", b =>
-                {
-                    b.Navigation("HomeworkSubmissions");
-
-                    b.Navigation("Resources");
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("P01_StudentSystem.Models.Student", b =>
