@@ -21,6 +21,8 @@ namespace P01_StudentSystem.Models
         public List<StudentCourse> StudentCourses { get; set; }
         public List<Homework> HomeworkSubmissions { get; set; }
 
+
+
         
     }
 
